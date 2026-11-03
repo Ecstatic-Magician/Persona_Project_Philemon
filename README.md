@@ -1,8 +1,24 @@
-# PSPRecomp
+# Persona: Project Philemon
+
+A native Windows static recompilation of **Shin Megami Tensei: Persona** (PSP, US, ULUS10432), built on the [PSPRecomp](https://github.com/jessicanataliagta/PSPRecomp) framework. It runs the game as a normal Windows program with a Direct3D 11 renderer, with no emulator or JIT.
+
+**No game data is included.** You supply your own dump of the game from a disc you own; the tools in this repository turn it into a native build on your machine.
+
+**What works:** sound and movies, 3D dungeons, battles, the world map, saving and loading (multiple slots), hi-res 3D (up to 8x internal resolution), hi-res 2D, PPSSPP-format texture packs, Xbox controller support, and an optional EXP/yen multiplier for testing routes.
+
+**Get started:** read [`persona1/README.md`](persona1/README.md) for the step-by-step build, where your ISO and any texture pack go, and the controls. The play folder is [`Persona_Project_Philemon/`](Persona_Project_Philemon/).
+
+Not affiliated with or endorsed by Atlus or Sega. Persona and Shin Megami Tensei are their trademarks.
+
+---
+
+## About the underlying framework
+
+### PSPRecomp
 
 PSPRecomp is a static recompilation framework for PSP software. It reads an Allegrex/MIPS executable, analyzes guest code, emits C++ translation units, and runs them through a native host runtime instead of shipping a PSP interpreter or JIT.
 
-The repository is split between a reusable framework and game-specific profiles. The first working profile is GTA: Vice City Stories (`profiles/vcs`). A second profile, Persona 1 (PSP) with a Direct3D 11 renderer and texture-pack support, is described in [`persona1/README.md`](persona1/README.md); it ships no game data.
+The repository is split between a reusable framework and game-specific profiles. The first working profile is GTA: Vice City Stories (`profiles/vcs`). The Persona 1 profile is described in [`persona1/README.md`](persona1/README.md).
 
 ## Repository layout
 
