@@ -50,3 +50,34 @@ SAVEDATA/
 # Python
 __pycache__/
 *.pyc
+
+# ---- Persona 1 profile: nothing derived from the game goes in the repo ----
+# Generated (recompiled) game code is rebuilt locally from your own dump.
+/persona1/gen*/
+/profiles/persona1/generated/*
+!/profiles/persona1/generated/.gitkeep
+# Analyzer output and function lists made from your own EBOOT
+/persona1/report*.csv
+/persona1/report*.json
+/persona1/functions_*.csv
+/persona1/nids_persona1.csv
+/persona1/cheat*.txt
+# Your dumped game, texture packs, saves, logs and screenshots
+/persona1/game/
+/persona1/mods/
+/persona1/ms0/
+/Persona_Project_Philemon/*
+!/Persona_Project_Philemon/*.bat
+!/Persona_Project_Philemon/README.txt
+!/Persona_Project_Philemon/game/
+/Persona_Project_Philemon/game/*
+!/Persona_Project_Philemon/game/.gitkeep
+!/Persona_Project_Philemon/mods/
+/Persona_Project_Philemon/mods/*
+!/Persona_Project_Philemon/mods/.gitkeep
+EBOOT.BIN
+*.pmf
+*.bak
+*.bmp
+persona1_screenshot_*.png
+tex_*_swz*.png
