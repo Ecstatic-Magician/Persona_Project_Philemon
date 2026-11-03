@@ -203,6 +203,18 @@ std::string emit_regular(const psprecomp::DecodedInstruction &d, std::uint32_t p
         out << "    { const std::uint64_t product = static_cast<std::uint64_t>(" << reg(d.rs) << ") * static_cast<std::uint64_t>(" << reg(d.rt) << "); "
             << "ctx.lo = static_cast<std::uint32_t>(product); ctx.hi = static_cast<std::uint32_t>(product >> 32u); }\n";
         break;
+    case psprecomp::OpcodeKind::Madd:
+        out << "    { const std::int64_t product = static_cast<std::int64_t>(static_cast<std::int32_t>(" << reg(d.rs) << ")) * static_cast<std::int64_t>(static_cast<std::int32_t>(" << reg(d.rt) << ")); std::uint64_t acc = (static_cast<std::uint64_t>(ctx.hi) << 32u) | ctx.lo; acc += static_cast<std::uint64_t>(product); ctx.lo = static_cast<std::uint32_t>(acc); ctx.hi = static_cast<std::uint32_t>(acc >> 32u); }\n";
+        break;
+    case psprecomp::OpcodeKind::Maddu:
+        out << "    { const std::uint64_t product = static_cast<std::uint64_t>(" << reg(d.rs) << ") * static_cast<std::uint64_t>(" << reg(d.rt) << "); std::uint64_t acc = (static_cast<std::uint64_t>(ctx.hi) << 32u) | ctx.lo; acc += product; ctx.lo = static_cast<std::uint32_t>(acc); ctx.hi = static_cast<std::uint32_t>(acc >> 32u); }\n";
+        break;
+    case psprecomp::OpcodeKind::Msub:
+        out << "    { const std::int64_t product = static_cast<std::int64_t>(static_cast<std::int32_t>(" << reg(d.rs) << ")) * static_cast<std::int64_t>(static_cast<std::int32_t>(" << reg(d.rt) << ")); std::uint64_t acc = (static_cast<std::uint64_t>(ctx.hi) << 32u) | ctx.lo; acc -= static_cast<std::uint64_t>(product); ctx.lo = static_cast<std::uint32_t>(acc); ctx.hi = static_cast<std::uint32_t>(acc >> 32u); }\n";
+        break;
+    case psprecomp::OpcodeKind::Msubu:
+        out << "    { const std::uint64_t product = static_cast<std::uint64_t>(" << reg(d.rs) << ") * static_cast<std::uint64_t>(" << reg(d.rt) << "); std::uint64_t acc = (static_cast<std::uint64_t>(ctx.hi) << 32u) | ctx.lo; acc -= product; ctx.lo = static_cast<std::uint32_t>(acc); ctx.hi = static_cast<std::uint32_t>(acc >> 32u); }\n";
+        break;
     case psprecomp::OpcodeKind::Div:
         // $zero is emitted as a literal 0u.  If it is also the divisor, do not
         // emit a syntactically present / or % expression at all: MSVC diagnoses

@@ -2,7 +2,7 @@
 
 PSPRecomp is a static recompilation framework for PSP software. It reads an Allegrex/MIPS executable, analyzes guest code, emits C++ translation units, and runs them through a native host runtime instead of shipping a PSP interpreter or JIT.
 
-The repository is split between a reusable framework and game-specific profiles. The first working profile is GTA: Vice City Stories (`profiles/vcs`).
+The repository is split between a reusable framework and game-specific profiles. The first working profile is GTA: Vice City Stories (`profiles/vcs`). A second profile, Persona 1 (PSP) with a Direct3D 11 renderer and texture-pack support, is described in [`persona1/README.md`](persona1/README.md); it ships no game data.
 
 ## Repository layout
 

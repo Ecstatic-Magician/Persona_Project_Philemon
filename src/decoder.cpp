@@ -75,7 +75,9 @@ DecodedInstruction decode_allegrex(std::uint32_t word) {
         case 0x16: d.kind = OpcodeKind::Clz; d.mnemonic = "clz"; break;
         case 0x17: d.kind = OpcodeKind::Clo; d.mnemonic = "clo"; break;
         case 0x18: d.kind = OpcodeKind::Mult; d.mnemonic = "mult"; break;
-        case 0x19: d.kind = OpcodeKind::Multu; d.mnemonic = "multu"; break;
+        case 0x19: d.kind = OpcodeKind::Multu; d.mnemonic = "multu"; break;
+        case 0x1C: d.kind = OpcodeKind::Madd; d.mnemonic = "madd"; break;
+        case 0x1D: d.kind = OpcodeKind::Maddu; d.mnemonic = "maddu"; break;
         case 0x1A: d.kind = OpcodeKind::Div; d.mnemonic = "div"; break;
         case 0x1B: d.kind = OpcodeKind::Divu; d.mnemonic = "divu"; break;
         case 0x20: d.kind = OpcodeKind::Add; d.mnemonic = "add"; break;
@@ -89,7 +91,9 @@ DecodedInstruction decode_allegrex(std::uint32_t word) {
         case 0x2A: d.kind = OpcodeKind::Slt; d.mnemonic = "slt"; break;
         case 0x2B: d.kind = OpcodeKind::Sltu; d.mnemonic = "sltu"; break;
         case 0x2C: d.kind = OpcodeKind::Max; d.mnemonic = "max"; break;
-        case 0x2D: d.kind = OpcodeKind::Min; d.mnemonic = "min"; break;
+        case 0x2D: d.kind = OpcodeKind::Min; d.mnemonic = "min"; break;
+        case 0x2E: d.kind = OpcodeKind::Msub; d.mnemonic = "msub"; break;
+        case 0x2F: d.kind = OpcodeKind::Msubu; d.mnemonic = "msubu"; break;
         default: d.kind = OpcodeKind::Unsupported; d.mnemonic = "special?"; break;
         }
         break;
