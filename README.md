@@ -8,7 +8,15 @@ A native Windows static recompilation of **Shin Megami Tensei: Persona** (PSP, U
 
 **Get started:** read [`persona1/README.md`](persona1/README.md) for the step-by-step build, where your ISO and any texture pack go, and the controls. The play folder is [`Persona_Project_Philemon/`](Persona_Project_Philemon/).
 
+**HD UI texture pack (optional):** Ryuubu's *Persona (1) - HD UI* pack is available as a separate download on the [Releases page](https://github.com/Ecstatic-Magician/Persona_Project_Philemon/releases), included with his permission. Extract it so the `mods` folder sits inside `Persona_Project_Philemon/` (see [`persona1/README.md`](persona1/README.md)). It is not stored in the repository itself.
+
 Not affiliated with or endorsed by Atlus or Sega. Persona and Shin Megami Tensei are their trademarks.
+
+## Credits
+
+- **[Jessica](https://github.com/jessicanataliagta)**, creator of [PSPRecomp](https://github.com/jessicanataliagta/PSPRecomp), the static recompilation framework this project is built on.
+- **Ryuubu**, author of the [*Persona (1) - HD UI*](https://forums.ppsspp.org/showthread.php?pid=141277) texture pack, shared here with his permission. All credit for the pack is his; please support his original release.
+- The PPSSPP team, whose open-source emulator is the reference for PSP behavior and the texture pack format used here.
 
 ---
 

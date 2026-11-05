@@ -81,3 +81,6 @@ EBOOT.BIN
 *.bmp
 persona1_screenshot_*.png
 tex_*_swz*.png
+
+# Release downloads (texture pack zips) are attached to GitHub Releases, not committed
+/release_assets/

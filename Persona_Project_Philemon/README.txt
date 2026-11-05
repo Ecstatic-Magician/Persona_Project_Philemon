@@ -24,6 +24,10 @@ The pack must use the PPSSPP format (a [hashes] list in textures.ini pointing at
 files). Packs are other people's work: check their terms before you redistribute one.
 Set PERSONA1_NOMODS=1 to turn the pack off, PERSONA1_MODS=<folder> to point elsewhere.
 
+HD UI pack: Ryuubu's "Persona (1) - HD UI" pack is offered as a separate download on this
+project's GitHub Releases page, with his permission. Extract the zip into this folder so that
+mods\textures.ini exists. Original: https://forums.ppsspp.org/showthread.php?pid=141277
+
 Starting the game
 -----------------
 Double-click Project_Philemon.bat (it checks that everything above is present).

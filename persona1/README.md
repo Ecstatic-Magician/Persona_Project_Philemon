@@ -110,6 +110,12 @@ either directly (`mods\textures.ini` plus its image folders) or inside one sub-f
 texture hashes to PNG files; replacement images can be any size, so high-resolution packs
 work. Texture packs are other people's work, so check their licence before redistributing them.
 
+**HD UI pack:** *Persona (1) - HD UI* by Ryuubu is offered as a separate download on the
+[Releases page](https://github.com/Ecstatic-Magician/Persona_Project_Philemon/releases), included with his permission (original thread:
+<https://forums.ppsspp.org/showthread.php?pid=141277>). Download `Persona1_HD_UI_by_Ryuubu.zip` and extract
+it inside `Persona_Project_Philemon\` so that `mods\textures.ini` exists. Please credit him if you share
+screenshots or videos.
+
 Environment variables: `PERSONA1_NOMODS=1` disables the pack, `PERSONA1_MODS=<folder>` uses a
 different folder, `PERSONA1_MODSLOG=1` logs which textures were replaced and which were missed.
 
