@@ -30,8 +30,10 @@ int io_save_slot_step(int delta);
 // F5: run persona1\cheat.txt (memory search / poke tool) and write cheat_out.txt.
 void cheat_run();
 
-// R3 reward multiplier: cycle off/2x/4x, per-poll watcher, resync after loads.
+// R3 reward multiplier: cycle off/2x/4x/8x/16x, per-poll watcher, resync after loads.
 int rewards_cycle();
+// L3 / F2: random encounters off or on; returns true when they are now off.
+bool encounters_toggle();
 int rewards_mult();
 void rewards_resync();
 void rewards_tick();

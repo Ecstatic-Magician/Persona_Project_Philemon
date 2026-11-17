@@ -4,7 +4,7 @@ A native Windows static recompilation of **Shin Megami Tensei: Persona** (PSP, U
 
 **No game data is included.** You supply your own dump of the game from a disc you own; the tools in this repository turn it into a native build on your machine.
 
-**What works:** sound and movies, 3D dungeons, battles, the world map, saving and loading (multiple slots), hi-res 3D (up to 8x internal resolution), hi-res 2D, PPSSPP-format texture packs, Xbox controller support, and an optional EXP/yen multiplier for testing routes.
+**What works:** sound and movies, 3D dungeons, battles, the world map, saving and loading (multiple slots), hi-res 3D (up to 8x internal resolution), hi-res 2D, PPSSPP-format texture packs, Xbox controller support, an optional EXP/yen multiplier (up to 16x), and a switch to turn random encounters off.
 
 **Get started:** read [`persona1/README.md`](persona1/README.md) for the step-by-step build, where your ISO and any texture pack go, and the controls. The play folder is [`Persona_Project_Philemon/`](Persona_Project_Philemon/).
 

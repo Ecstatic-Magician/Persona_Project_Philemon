@@ -11,8 +11,8 @@ PSPRecomp framework in this repository. It runs natively on Windows with a Direc
 ## What works
 
 Sound, movies, 3D dungeons, battles, world map, saving and loading (several slots), hi-res 3D
-(up to 8x) and hi-res 2D, PPSSPP-format texture packs, Xbox controller support, and an optional
-EXP/yen multiplier for testing routes.
+(up to 8x) and hi-res 2D, PPSSPP-format texture packs, Xbox controller support, an optional
+EXP/yen multiplier (up to 16x), and a switch to turn random encounters off.
 
 ## You need
 
@@ -125,7 +125,8 @@ different folder, `PERSONA1_MODSLOG=1` logs which textures were replaced and whi
 | --- | --- |
 | Arrows / Z X A S / Q W / Space / Enter | D-pad / cross circle square triangle / L R / Select / Start |
 | Xbox controller | D-pad or left stick, A B X Y, LB RB, View = Select, Menu = Start |
-| **R3** (right stick click) | EXP and yen rewards: off, 2x, 4x (a popup shows the setting) |
+| **R3** (right stick click) or F1 | EXP and yen rewards: off, 2x, 4x, 8x, 16x (a popup shows the setting) |
+| **L3** (left stick click) or F2 | Random encounters off / on, in dungeons and on the street map (a popup shows the setting) |
 | **LT** | 3D internal resolution (same as F7) |
 | **RT** | Fullscreen (same as F9) |
 | F3 / F4 | Previous / next save slot |
@@ -134,6 +135,10 @@ different folder, `PERSONA1_MODSLOG=1` logs which textures were replaced and whi
 | F8 | Upscale filter |
 | F9 / Alt+Enter | Fullscreen |
 | F12 | Screenshot (native 480x272) |
+
+Notes on the two cheats: the battle results screen still shows the normal EXP figure; the bonus is added to the
+characters directly, and a character gains at most one level per battle. Persona rank EXP is not multiplied.
+Random encounters are back on each time the game starts.
 
 Saves are written to `Persona_Project_Philemon\ms0\PSP\SAVEDATA\` in the original PSP format.
 

@@ -31,7 +31,7 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 
-namespace persona1 { int io_save_slot_step(int delta); void cheat_run(); }
+namespace persona1 { int io_save_slot_step(int delta); void cheat_run(); int rewards_cycle(); bool encounters_toggle(); }
 namespace persona1 {
 namespace {
 
@@ -738,6 +738,15 @@ LRESULT CALLBACK wnd_proc(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
     case WM_KEYDOWN:
         if (wp == VK_F9 || (wp == VK_ESCAPE && g_fullscreen)) { toggle_fullscreen(hwnd); return 0; }
         if (wp == VK_F5) { persona1::cheat_run(); return 0; }
+        if (wp == VK_F1) {
+            const int mu = persona1::rewards_cycle();
+            wchar_t t[96];
+            if (mu == 1) swprintf(t, 96, L"EXP / Yen rewards: OFF");
+            else swprintf(t, 96, L"EXP / Yen rewards: %dx", mu);
+            toast_show(t);
+            return 0;
+        }
+        if (wp == VK_F2) { toast_show(persona1::encounters_toggle() ? L"Random encounters: OFF" : L"Random encounters: ON"); return 0; }
         if (wp == VK_F6) {
             const int m = (g_hd2d_mode.load() + 1) % 3;
             g_hd2d_mode = m;
@@ -986,6 +995,11 @@ std::uint32_t input_poll(std::uint8_t *lx, std::uint8_t *ly) {
             if (r3 && !r3_was) reward_toast(rewards_cycle());
             else if (r3) g_toast_until = GetTickCount64() + 1800;  // keep the popup up while the stick is held
             r3_was = r3;
+            static bool l3_was = false;
+            const bool l3 = (x & 0x0040) != 0;  // left stick click: random encounters off/on (same as F2)
+            if (l3 && !l3_was) toast_show(encounters_toggle() ? L"Random encounters: OFF" : L"Random encounters: ON");
+            else if (l3) g_toast_until = GetTickCount64() + 1800;
+            l3_was = l3;
             static bool lt_was = false;
             const bool lt = st.pad.lt > 160;  // left trigger: 3D resolution (same as F7)
             if (lt && !lt_was) cycle_scale();

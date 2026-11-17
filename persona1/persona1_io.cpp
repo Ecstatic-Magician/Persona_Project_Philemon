@@ -787,7 +787,7 @@ void cheat_run() {
 }
 
 
-// ---- Reward multiplier (R3 on the controller cycles off -> 2x -> 4x). Watches the party's EXP and the money in
+// ---- Reward multiplier (R3 on the controller or F1 cycles off -> 2x -> 4x -> 8x -> 16x). Watches the party's EXP and the money in
 // guest memory once per controller poll; when EXP rises (a battle reward) it adds the extra EXP, and the money
 // gained in the same moment is multiplied too. Selling items etc. (money rising with no EXP) is left alone.
 // Layout (checked against the save file, which is a raw copy of this memory): base 0x08A791F4,
@@ -818,9 +818,84 @@ void on_load(const std::uint8_t *data, std::size_t n, std::uint32_t buf, std::ui
 void st(std::uint32_t a, std::uint32_t v) { g.rt->memory().aot_fast_view().aot_store32(a, v); }
 }  // namespace rewards
 
+// ---- Random encounter switch (L3 on the controller, or F2). The field code keeps a per-step countdown in the
+// player record (byte +56 of the record whose pointer sits at 0x08CCBD5C): while it is above zero no encounter
+// roll is made, and the game refills it with 9..12 after each battle. Keeping it topped up means no roll ever runs.
+namespace encounters {
+constexpr std::uint32_t kPlayerPtr = 0x08CCBD5Cu;
+constexpr std::uint32_t kStreetPtr = 0x08B93D28u;
+bool off = false;
+std::uint32_t record() {
+    const std::uint32_t p = g.rt->memory().aot_fast_view().aot_load32(kPlayerPtr);
+    return (p >= 0x08800000u && p < 0x09FFFF00u) ? p : 0u;
+}
+void tick() {
+    static const bool dbg = std::getenv("PERSONA1_REWARDSLOG") != nullptr;
+    if (dbg) {  // log the pointer and the countdown byte whenever they change
+        static std::uint32_t last_raw = 1u; static int last56 = -1, last57 = -1; static unsigned lines = 0;
+        const auto mm = g.rt->memory().aot_fast_view();
+        const std::uint32_t raw = mm.aot_load32(kPlayerPtr);
+        const std::uint32_t q = record();
+        const int b56 = q ? mm.aot_load8(q + 56u) : -1, b57 = q ? mm.aot_load8(q + 57u) : -1;
+        if ((raw != last_raw || b56 != last56 || b57 != last57) && lines < 1500) {
+            ++lines;
+            std::fprintf(stderr, "[encounters-dbg] ptr=0x%08X +56=%d +57=%d off=%d\n", raw, b56, b57, off ? 1 : 0);
+        }
+        last_raw = raw; last56 = b56; last57 = b57;
+    }
+    if (!off) return;
+    {   // Street map: an encounter check runs each time the walked distance (float at +0xD0 of the map state,
+        // pointer at 0x08B93D28) reaches 30. Keep it at zero.
+        const auto mm = g.rt->memory().aot_fast_view();
+        const std::uint32_t s = mm.aot_load32(kStreetPtr);
+        if (s >= 0x08800000u && s < 0x09FFFF00u && mm.aot_load32(s) <= 3u) {
+            const std::uint32_t bits = mm.aot_load32(s + 0xD0u);
+            float f; std::memcpy(&f, &bits, 4);
+            if (bits != 0u && f > 0.f && f < 31.f) {
+                mm.aot_store32(s + 0xD0u, 0u);
+                static unsigned n = 0;
+                if (n++ < 20) std::fprintf(stderr, "[encounters] street distance %.2f -> 0 (state 0x%08X)\n", f, s);
+            }
+        }
+    }
+    const std::uint32_t p = record();
+    if (!p) return;
+    const auto m = g.rt->memory().aot_fast_view();
+    const unsigned v = m.aot_load8(p + 56u);
+    if (v <= 12u) {
+        m.aot_store8(p + 56u, static_cast<std::uint8_t>(0xF0));
+        static unsigned n = 0;
+        if (n++ < 200) std::fprintf(stderr, "[encounters] countdown %u -> 240 (record 0x%08X)\n", v, p);
+    }
+}
+}  // namespace encounters
+
+bool encounters_toggle() {
+    using namespace encounters;
+    off = !off;
+    if (!off && g.rt) {  // back on: drop the padded countdown to a normal value
+        if (const std::uint32_t p = record()) {
+            const auto m = g.rt->memory().aot_fast_view();
+            if (m.aot_load8(p + 56u) > 12u) m.aot_store8(p + 56u, static_cast<std::uint8_t>(12));
+        }
+    }
+    std::cerr << "[encounters] random encounters " << (off ? "OFF" : "on") << "\n";
+    if (g.rt) {
+        const auto m = g.rt->memory().aot_fast_view();
+        const std::uint32_t raw = m.aot_load32(kPlayerPtr);
+        std::fprintf(stderr, "[encounters] dungeon pointer 0x%08X street pointer 0x%08X", raw, m.aot_load32(kStreetPtr));
+        if (const std::uint32_t p = record()) {
+            std::fprintf(stderr, " bytes +32:");
+            for (std::uint32_t i = 32; i < 64; ++i) std::fprintf(stderr, " %02X", static_cast<unsigned>(m.aot_load8(p + i)));
+        }
+        std::fprintf(stderr, "\n");
+    }
+    return off;
+}
+
 int rewards_cycle() {
     using namespace rewards;
-    mult = mult == 1 ? 2 : mult == 2 ? 4 : 1;
+    mult = mult >= 16 ? 1 : mult * 2;  // off -> 2x -> 4x -> 8x -> 16x -> off
     resync = true;
     std::cerr << "[rewards] EXP/yen multiplier: " << (mult == 1 ? std::string("off") : std::to_string(mult) + "x") << "\n";
     return mult;
@@ -832,6 +907,7 @@ void rewards_tick() {
     using namespace rewards;
     if (!g.rt) return;
     ++tick;
+    encounters::tick();
     if (scan_pending && tick >= scan_at) {
         scan_pending = false;
         std::uint32_t found = 0;
@@ -883,6 +959,16 @@ void rewards_tick() {
             const std::uint32_t d = e[i] - prev_exp[i];
             e[i] += d * extra;
             st(kBase + 0x80u * i + 0x10u, e[i]);
+            // The level-up is driven by two more counters in the record: +0x14 "EXP earned this level" and
+            // +0x18 "EXP still needed". Move both by the bonus, stopping 1 short so the game's own code
+            // performs the level-up on the next reward.
+            const std::uint32_t rec = kBase + 0x80u * i;
+            const std::uint32_t need = ld(rec + 0x18u);
+            if (need > 1u && need < 100000000u) {
+                const std::uint32_t add = std::min(d * extra, need - 1u);
+                st(rec + 0x14u, ld(rec + 0x14u) + add);
+                st(rec + 0x18u, need - add);
+            }
             exp_gain = true;
         }
         prev_exp[i] = e[i];

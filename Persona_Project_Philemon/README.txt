@@ -40,7 +40,8 @@ Controls
 Keyboard: arrows, Z = X(cross), X = O(circle), A = square, S = triangle, Q/W = L/R,
           Space = Select, Enter = Start
 Xbox pad: D-pad/left stick, A/B/X/Y, LB/RB = L/R, View = Select, Menu = Start
-  Right stick click (R3)  EXP and yen rewards: off -> 2x -> 4x (for testing routes)
+  Right stick click (R3)  EXP and yen rewards: off -> 2x -> 4x -> 8x -> 16x (also F1)
+  Left stick click (L3)   random encounters off / on, dungeons and street map (also F2)
   Left trigger (LT)       3D internal resolution (same as F7)
   Right trigger (RT)      fullscreen (same as F9)
 F3/F4 save slot, F6 HD 2D mode, F7 3D resolution, F8 upscale filter,
